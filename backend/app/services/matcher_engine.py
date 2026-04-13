@@ -1,12 +1,7 @@
-from functools import lru_cache
 from rapidfuzz import fuzz
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from app.services.extractor import normalize_skill
-
-
-@lru_cache(maxsize=1)
-def get_embedding_model():
-    from sentence_transformers import SentenceTransformer
-    return SentenceTransformer("all-MiniLM-L6-v2")
 
 
 def exact_skill_match(resume_skills: list[str], jd_skills: list[str]) -> list[str]:
@@ -44,14 +39,17 @@ def fuzzy_skill_match(
 
 
 def semantic_text_similarity(resume_text: str, jd_text: str) -> float:
-    from sentence_transformers import util
+    """
+    Lightweight semantic-ish similarity using TF-IDF + cosine similarity.
+    Suitable for deployment on Render.
+    """
+    texts = [resume_text, jd_text]
 
-    embedding_model = get_embedding_model()
-    resume_embedding = embedding_model.encode(resume_text, convert_to_tensor=True)
-    jd_embedding = embedding_model.encode(jd_text, convert_to_tensor=True)
+    vectorizer = TfidfVectorizer(stop_words="english", ngram_range=(1, 2))
+    matrix = vectorizer.fit_transform(texts)
 
-    similarity = util.cos_sim(resume_embedding, jd_embedding)
-    return float(similarity.item())
+    similarity = cosine_similarity(matrix[0:1], matrix[1:2])[0][0]
+    return float(similarity)
 
 
 def detect_critical_missing_skills(
