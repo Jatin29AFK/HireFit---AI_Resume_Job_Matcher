@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function CollapsibleSection({
   title,
@@ -7,11 +7,15 @@ export default function CollapsibleSection({
 }) {
   const [open, setOpen] = useState(defaultOpen)
 
+  useEffect(() => {
+    setOpen(defaultOpen)
+  }, [defaultOpen, title])
+
   return (
     <div className="rounded-2xl bg-white shadow-lg">
       <button
         type="button"
-        onClick={() => setOpen(!open)}
+        onClick={() => setOpen((prev) => !prev)}
         className="flex w-full items-center justify-between px-6 py-5 text-left"
       >
         <h2 className="text-xl font-semibold text-gray-900">{title}</h2>

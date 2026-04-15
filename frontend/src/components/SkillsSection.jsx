@@ -1,9 +1,16 @@
 function SkillList({ title, skills, colorClass }) {
+  const count = skills?.length ?? 0
+
   return (
     <div className="rounded-2xl bg-white p-6 shadow-lg">
-      <h3 className="mb-4 text-lg font-semibold text-gray-900">{title}</h3>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-700">
+          {count}
+        </span>
+      </div>
 
-      {skills && skills.length > 0 ? (
+      {count > 0 ? (
         <div className="flex flex-wrap gap-2">
           {skills.map((skill, index) => (
             <span
@@ -15,7 +22,7 @@ function SkillList({ title, skills, colorClass }) {
           ))}
         </div>
       ) : (
-        <p className="text-sm text-gray-500">No items found.</p>
+        <p className="text-sm text-gray-500">Nothing to show here for this section.</p>
       )}
     </div>
   )

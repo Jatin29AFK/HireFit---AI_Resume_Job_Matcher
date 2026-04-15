@@ -1,9 +1,9 @@
 def get_fit_label(score: float) -> str:
-    if score >= 85:
+    if score >= 80:
         return "Strong Fit"
-    elif score >= 70:
+    elif score >= 65:
         return "Good Fit"
-    elif score >= 50:
+    elif score >= 45:
         return "Moderate Fit"
     return "Low Fit"
 
@@ -13,8 +13,8 @@ def calculate_section_evidence_score(
     section_skill_map: dict[str, list[str]]
 ) -> float:
     weights = {
-        "skills": 0.30,
-        "experience": 0.30,
+        "skills": 0.25,
+        "experience": 0.35,
         "projects": 0.25,
         "summary": 0.10,
         "certifications": 0.05
@@ -51,9 +51,9 @@ def calculate_weighted_skill_score(
     general_score = len(matched_set.intersection(general_set)) / len(general_set) if general_set else 0.0
 
     weighted_skill_score = (
-        0.60 * required_score +
-        0.25 * preferred_score +
-        0.15 * general_score
+        0.55 * required_score +
+        0.10 * preferred_score +
+        0.35 * general_score
     )
 
     return {
@@ -86,14 +86,17 @@ def calculate_match_score(
     support_score_raw = skill_support_score / 100.0
 
     total_priority_skills = len(required_skills) + len(preferred_skills) + len(general_skills)
-    penalty = len(critical_missing_skills) / total_priority_skills if total_priority_skills else 0.0
+    raw_penalty = len(critical_missing_skills) / total_priority_skills if total_priority_skills else 0.0
+
+    # cap the impact so a few gaps do not crush the score too much
+    effective_penalty = min(raw_penalty, 0.20)
 
     overall_score = (
-        0.40 * weighted_skill["weighted_skill_score_raw"] +
-        0.20 * semantic_score +
-        0.20 * evidence_score +
-        0.20 * support_score_raw -
-        0.25 * penalty
+        0.42 * weighted_skill["weighted_skill_score_raw"] +
+        0.12 * semantic_score +
+        0.18 * evidence_score +
+        0.18 * support_score_raw -
+        0.10 * effective_penalty
     )
 
     overall_score = max(0.0, min(overall_score, 1.0))
@@ -107,7 +110,7 @@ def calculate_match_score(
         "semantic_score": round(semantic_score * 100, 2),
         "section_evidence_score": round(evidence_score * 100, 2),
         "skill_support_score": round(skill_support_score, 2),
-        "critical_missing_penalty": round(penalty * 100, 2),
+        "critical_missing_penalty": round(raw_penalty * 100, 2),
         "overall_score": overall_percent,
         "fit_label": get_fit_label(overall_percent)
     }

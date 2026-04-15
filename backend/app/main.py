@@ -13,7 +13,7 @@ ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 app = FastAPI(
     title=APP_NAME,
     version=APP_VERSION,
-    description="An NLP-based API to analyze resume-job fit using skill extraction, semantic similarity, and evidence-aware scoring."
+    description="Hybrid AI Resume–Job Matcher backend"
 )
 
 app.add_middleware(

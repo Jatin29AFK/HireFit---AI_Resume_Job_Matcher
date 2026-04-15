@@ -1,4 +1,4 @@
-export default function SummaryHero({ filename, scores }) {
+export default function SummaryHero({ filename, scores, actions = null, analysisMeta = null }) {
   if (!scores) return null
 
   const fitColor =
@@ -10,29 +10,65 @@ export default function SummaryHero({ filename, scores }) {
       ? 'text-yellow-700 bg-yellow-100'
       : 'text-red-700 bg-red-100'
 
-  return (
-    <div className="rounded-3xl bg-white p-6 shadow-lg md:p-8">
-      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-500">Analyzed Resume</p>
-          <h2 className="mt-1 text-2xl font-bold text-gray-900">{filename}</h2>
-          <p className="mt-2 max-w-2xl text-sm text-gray-600">
-            This dashboard summarizes resume-to-job compatibility using required skill coverage,
-            semantic similarity, evidence validation, and estimated experience alignment.
-          </p>
-        </div>
+  const reliability = analysisMeta?.reliability || 'unknown'
+  const activeDomainLabel = analysisMeta?.active_domain?.label || 'General'
+  const warningMessage = analysisMeta?.warning_message || null
 
-        <div className="flex flex-col items-start gap-3 md:items-end">
-          <div className="text-right">
-            <p className="text-sm text-gray-500">Overall Match</p>
-            <p className="text-4xl font-extrabold text-gray-900">
-              {scores.overall_score}%
-            </p>
+  const reliabilityClass =
+    reliability === 'high'
+      ? 'bg-green-100 text-green-800'
+      : reliability === 'medium'
+      ? 'bg-yellow-100 text-yellow-800'
+      : 'bg-red-100 text-red-800'
+
+  return (
+    <div className="rounded-3xl bg-white p-5 shadow-lg md:p-6">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+            Analyzed Resume
+          </p>
+          <h2 className="mt-2 truncate text-2xl font-bold text-gray-900 md:text-3xl">
+            {filename}
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-600">
+            Quick compatibility snapshot using skill coverage, semantic similarity,
+            evidence validation, and estimated experience alignment.
+          </p>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+              Active Domain: {activeDomainLabel}
+            </span>
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold ${reliabilityClass}`}>
+              Analysis Reliability: {reliability}
+            </span>
           </div>
 
-          <span className={`rounded-full px-4 py-2 text-sm font-semibold ${fitColor}`}>
-            {scores.fit_label}
-          </span>
+          {warningMessage ? (
+            <div className="mt-4 rounded-2xl bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-800">
+              {warningMessage}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="flex flex-col gap-4 lg:items-end">
+          <div className="flex items-end gap-4 lg:justify-end">
+            <div className="text-left lg:text-right">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+                Overall Match
+              </p>
+              <p className="mt-1 text-4xl font-extrabold leading-none text-gray-900 md:text-5xl">
+                {scores.overall_score}%
+              </p>
+            </div>
+
+            <span className={`inline-flex rounded-full px-4 py-2 text-sm font-semibold ${fitColor}`}>
+              {scores.fit_label}
+            </span>
+          </div>
+
+          {actions ? <div className="w-full lg:w-auto">{actions}</div> : null}
         </div>
       </div>
     </div>

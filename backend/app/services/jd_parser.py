@@ -30,13 +30,15 @@ EDUCATION_PATTERNS = [
     r"\bphd\b",
     r"\bcomputer science\b",
     r"\binformation technology\b",
-    r"\bengineering\b"
+    r"\bengineering\b",
+    r"\bmechanical\b",
+    r"\baerospace\b",
+    r"\belectrical\b",
+    r"\belectronics\b",
 ]
 
-
 def split_jd_lines(job_description: str) -> list[str]:
-    lines = [line.strip() for line in job_description.splitlines() if line.strip()]
-    return lines
+    return [line.strip() for line in job_description.splitlines() if line.strip()]
 
 
 def classify_jd_line(line: str) -> str:
@@ -59,17 +61,26 @@ def extract_experience_requirements(job_description: str) -> dict:
     patterns = [
         r"(\d+)\+?\s+years? of experience",
         r"minimum\s+(\d+)\+?\s+years?",
-        r"at least\s+(\d+)\+?\s+years?"
+        r"at least\s+(\d+)\+?\s+years?",
+        r"~?(\d+)\s*-\s*(\d+)\s*years?"
     ]
 
     years = []
+
     for pattern in patterns:
         matches = re.findall(pattern, text)
         for match in matches:
-            try:
-                years.append(int(match))
-            except ValueError:
-                pass
+            if isinstance(match, tuple):
+                for item in match:
+                    try:
+                        years.append(int(item))
+                    except ValueError:
+                        pass
+            else:
+                try:
+                    years.append(int(match))
+                except ValueError:
+                    pass
 
     return {
         "min_years_experience": max(years) if years else None
@@ -88,11 +99,7 @@ def extract_education_requirements(job_description: str) -> list[str]:
     return sorted(found)
 
 
-def parse_jd_requirements(job_description: str) -> dict:
-    """
-    Parse JD into required skills, preferred skills, general skills,
-    experience requirements, and education requirements.
-    """
+def parse_jd_requirements(job_description: str, domain_name: str | None = None) -> dict:
     lines = split_jd_lines(job_description)
 
     required_lines = []
@@ -122,11 +129,19 @@ def parse_jd_requirements(job_description: str) -> dict:
     preferred_text = "\n".join(preferred_lines)
     general_text = "\n".join(general_lines)
 
-    required_skills = [normalize_skill(skill) for skill in extract_skills_from_text(required_text)]
-    preferred_skills = [normalize_skill(skill) for skill in extract_skills_from_text(preferred_text)]
-    general_skills = [normalize_skill(skill) for skill in extract_skills_from_text(general_text)]
+    required_skills = [normalize_skill(skill, domain_name) for skill in extract_skills_from_text(required_text, domain_name)]
+    preferred_skills = [normalize_skill(skill, domain_name) for skill in extract_skills_from_text(preferred_text, domain_name)]
+    general_skills = [normalize_skill(skill, domain_name) for skill in extract_skills_from_text(general_text, domain_name)]
 
     all_jd_skills = sorted(set(required_skills + preferred_skills + general_skills))
+
+    if not all_jd_skills:
+        fallback_skills = [
+            normalize_skill(skill, domain_name)
+            for skill in extract_skills_from_text(job_description, domain_name)
+        ]
+        general_skills = sorted(set(fallback_skills))
+        all_jd_skills = sorted(set(general_skills))
 
     return {
         "required_skills": sorted(set(required_skills)),
