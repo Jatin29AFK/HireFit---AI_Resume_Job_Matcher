@@ -328,13 +328,14 @@ Create a .env using .env.example.
  
 ## Example:
  
+ ```bash
 APP_NAME=HireFit API
 APP_VERSION=1.0.0
 ALLOWED_ORIGINS=http://localhost:5173
 LLM_PROVIDER=mock
 GEMINI_API_KEY=your_key_here
 GEMINI_MODEL=gemini-2.5-flash
- 
+ ```
  
 ---
   
@@ -353,9 +354,9 @@ VITE_API_BASE_URL=http://127.0.0.1:8000
  
 ---
  
-### Deployment
+## Deployment
  
-## Frontend
+### Frontend
  
 Deploy on Vercel.
  
@@ -363,12 +364,12 @@ Required environment variable:
  
 VITE_API_BASE_URL=https://your-render-backend-url.onrender.com
  
-## Backend
+### Backend
  
 Deploy on Render.
  
 Important environment variables:
- 
+ ```bash
 APP_NAME
  
 APP_VERSION
@@ -380,7 +381,7 @@ LLM_PROVIDER
 GEMINI_API_KEY
  
 GEMINI_MODEL
- 
+ ```
  
  
 ---
@@ -389,22 +390,22 @@ GEMINI_MODEL
  
 HireFit includes both frontend and backend validation for job descriptions.
  
-It warns on:
+1)  warns on:
  
-code/script-like text
+- code/script-like text
  
-overly short content
+- overly short content
  
-non-JD-like content
+- non-JD-like content
  
  
-It also auto-cleans many pasted JD artifacts such as:
+2) It also auto-cleans many pasted JD artifacts such as:
  
-copied HTML fragments
+- copied HTML fragments
  
-extra spacing
+- extra spacing
  
-portal formatting junk
+- portal formatting junk
  
  
 This helps reduce false errors for real technical job descriptions.
@@ -418,13 +419,13 @@ HireFit should be used as a resume improvement assistant, not as a final truth e
  
 Users should always:
  
-review every generated change manually
+- review every generated change manually
  
-verify every resume claim
+- verify every resume claim
  
-avoid adding unsupported skills
+- avoid adding unsupported skills
  
-treat optimization as guided editing, not automatic truth
+- treat optimization as guided editing, not automatic truth
  
  
  
@@ -432,17 +433,17 @@ treat optimization as guided editing, not automatic truth
  
 ## Current Strengths
  
-safer than naive AI resume rewriters
+- Safer than naive AI resume rewriters
  
-more explainable than keyword-only ATS tools
+- More explainable than keyword-only ATS tools
  
-combines ATS, recruiter, and evidence views
+- Combines ATS, recruiter, and evidence views
  
-supports resume-to-multiple-JD comparison
+- Supports resume-to-multiple-JD comparison
  
-optimized draft generation is constrained by source evidence
+- Optimized draft generation is constrained by source evidence
  
-useful for iterative improvement
+- Useful for iterative improvement
  
  
  
@@ -450,15 +451,15 @@ useful for iterative improvement
  
 ## Current Limitations
  
-JD URL extraction can still be noisy on some job portals
+- JD URL extraction can still be noisy on some job portals
  
-parsing quality depends on resume structure quality
+- Parsing quality depends on resume structure quality
  
-score calibration can still vary across niche domains
+- Score calibration can still vary across niche domains
  
-optimized output quality depends on source resume clarity
+- Optimized output quality depends on source resume clarity
  
-some domain-specific resumes need stronger customization
+- Some domain-specific resumes need stronger customization
  
  
  
@@ -466,25 +467,25 @@ some domain-specific resumes need stronger customization
  
 ## Future Improvements
  
-stronger site-specific JD extraction
+- Stronger site-specific JD extraction
  
-richer domain support for non-software roles
+- Richer domain support for non-software roles
  
-account/login and saved history
+- Account/login and saved history
  
-shareable analysis reports
+- Shareable analysis reports
  
-resume version tracking
+- Resume version tracking
  
-interview question generation from JD gaps
+- Interview question generation from JD gaps
  
-batch JD testing
+- Batch JD testing
  
-analytics dashboard for repeated applications
+- Analytics dashboard for repeated applications
  
-stronger recruiter persona modes
+- Stronger recruiter persona modes
  
-downloadable branded report PDFs
+- Downloadable branded report PDFs
  
  
  
@@ -492,23 +493,23 @@ downloadable branded report PDFs
  
 ## Ideal Use Cases
  
-students preparing for campus placements
+- students preparing for campus placements
  
-job seekers tailoring resumes role-by-role
+- job seekers tailoring resumes role-by-role
  
-early-career engineers checking role fit before applying
+- early-career engineers checking role fit before applying
  
-technical candidates wanting recruiter-style feedback
+- technical candidates wanting recruiter-style feedback
  
-users comparing one resume across multiple job opportunities
+- users comparing one resume across multiple job opportunities
  
  
  
 ---
  
-### Author
+## Author
  
-### Created by Jatin Shukla
+## Created by Jatin Shukla
  
  
 ---
