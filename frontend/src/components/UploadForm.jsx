@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   validateResumeFile,
   validateJobDescriptionInput,
+  sanitizeJobDescriptionInput,
 } from '../utils/jdValidation'
 
 export default function UploadForm({ onAnalyze, loading, resetKey }) {
@@ -60,11 +61,12 @@ export default function UploadForm({ onAnalyze, loading, resetKey }) {
   }
 
   const handleJdChange = (event) => {
-    const value = event.target.value
-    setJobDescription(value)
+    const rawValue = event.target.value
+    const cleanedValue = sanitizeJobDescriptionInput(rawValue)
+    setJobDescription(cleanedValue)
 
     if (jdError) {
-      setJdError(validateJobDescriptionInput(value))
+      setJdError(validateJobDescriptionInput(cleanedValue))
     }
   }
 
@@ -98,8 +100,10 @@ export default function UploadForm({ onAnalyze, loading, resetKey }) {
         throw new Error(data.detail || 'Failed to fetch JD from URL.')
       }
 
-      setJobDescription(data.job_description || '')
-      setJdError('')
+      const cleanedFetchedJd = sanitizeJobDescriptionInput(data.job_description || '')
+      setJobDescription(cleanedFetchedJd)
+      setJdError(validateJobDescriptionInput(cleanedFetchedJd))
+ 
     } catch (error) {
       setUrlError(error.message || 'Failed to fetch JD from URL.')
     } finally {
@@ -111,8 +115,9 @@ export default function UploadForm({ onAnalyze, loading, resetKey }) {
     event.preventDefault()
 
     const nextFileError = validateResumeFile(resumeFile)
-    const nextJdError = validateJobDescriptionInput(jobDescription)
-
+    const cleanedJobDescription = sanitizeJobDescriptionInput(jobDescription)
+    const nextJdError = validateJobDescriptionInput(cleanedJobDescription)
+ 
     setFileError(nextFileError)
     setJdError(nextJdError)
 
@@ -120,8 +125,9 @@ export default function UploadForm({ onAnalyze, loading, resetKey }) {
 
     const formData = new FormData()
     formData.append('resume', resumeFile)
-    formData.append('job_description', jobDescription.trim())
-
+    setJobDescription(cleanedJobDescription)
+    formData.append('job_description', cleanedJobDescription)
+ 
     onAnalyze(formData)
   }
 

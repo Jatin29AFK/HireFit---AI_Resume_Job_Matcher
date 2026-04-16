@@ -1,67 +1,118 @@
-const JOB_HINT_WORDS = [
-  'responsibilities',
-  'requirements',
-  'qualifications',
-  'skills',
-  'experience',
-  'preferred',
-  'must have',
-  'nice to have',
-  'role',
-  'job description',
-  'about the role',
-  'what you will do',
-  'what we are looking for',
-  'eligibility',
-  'candidate',
-]
-
-const HTML_PATTERN =
-  /<\/?(html|head|body|div|span|script|style|meta|link|svg|path|iframe|noscript|button|input|form)[^>]*>/i
-
-const CODE_PATTERN =
-  /(function\s+\w+\s*\(|const\s+\w+\s*=|let\s+\w+\s*=|var\s+\w+\s*=|<script|<\/script>|import\s+\w+|export\s+default|class\s+\w+)/i
-
-export function validateResumeFile(file) {
-  if (!file) return 'Please select a resume file.'
-
-  const allowed = ['.pdf', '.docx']
-  const lower = file.name.toLowerCase()
-  const valid = allowed.some((ext) => lower.endsWith(ext))
-
-  if (!valid) {
-    return 'Only PDF and DOCX resume files are supported.'
+function normalizeJobDescription(text = '') {
+  return text
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\r/g, '\n')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+ 
+function looksLikeRealCode(text) {
+  const lowered = text.toLowerCase()
+ 
+  const patterns = [
+    /<script\b/,
+    /<\/script>/,
+    /function\s+\w+\s*\(/,
+    /const\s+\w+\s*=/,
+    /let\s+\w+\s*=/,
+    /var\s+\w+\s*=/,
+    /document\./,
+    /window\./,
+    /console\.log/,
+    /import\s+.+\s+from\s+['"]/,
+    /export\s+default/,
+    /def\s+\w+\s*\(/,
+    /class\s+\w+\s*[:(]/,
+    /public\s+static\s+void\s+main/,
+    /#include\s*</,
+  ]
+ 
+  let matches = 0
+  for (const pattern of patterns) {
+    if (pattern.test(lowered)) matches += 1
   }
-
+ 
+  return matches >= 2
+}
+ 
+function looksLikeJobDescription(text) {
+  const lowered = text.toLowerCase()
+ 
+  const jdHints = [
+    'job description',
+    'responsibilities',
+    'requirements',
+    'qualifications',
+    'preferred qualifications',
+    'skills',
+    "what you'll do",
+    'what you will do',
+    'about the role',
+    'experience',
+    'education',
+    'must have',
+    'nice to have',
+    'preferred',
+    'role overview',
+  ]
+ 
+  const techTerms = [
+    'python', 'java', 'c++', 'c#', '.net', 'sql', 'react', 'node.js',
+    'machine learning', 'deep learning', 'nlp', 'llm', 'rag',
+    'cfd', 'thermal analysis', 'heat transfer', 'embedded', 'firmware',
+    'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'api', 'fastapi',
+  ]
+ 
+  const jdHintMatches = jdHints.filter((item) => lowered.includes(item)).length
+  const techMatches = techTerms.filter((item) => lowered.includes(item)).length
+  const bulletMatches = (text.match(/(•|\*|-)\s+\w+/g) || []).length
+  const wordCount = text.split(/\s+/).filter(Boolean).length
+ 
+  return (
+    jdHintMatches >= 1 ||
+    techMatches >= 3 ||
+    bulletMatches >= 3 ||
+    wordCount >= 80
+  )
+}
+ 
+export function sanitizeJobDescriptionInput(value) {
+  return normalizeJobDescription(value)
+}
+ 
+export function validateResumeFile(file) {
+  if (!file) return 'Please upload a resume file.'
+  const validExtensions = ['pdf', 'docx']
+  const ext = file.name.split('.').pop()?.toLowerCase()
+  if (!validExtensions.includes(ext)) {
+    return 'Only PDF and DOCX resumes are supported.'
+  }
   return ''
 }
-
+ 
 export function validateJobDescriptionInput(value) {
-  const text = (value || '').trim()
-
-  if (!text) {
-    return 'Please paste a job description.'
+  const cleaned = normalizeJobDescription(value)
+ 
+  if (!cleaned) {
+    return 'Please paste a job description first.'
   }
-
-  if (text.length < 120) {
-    return 'The pasted content looks too short to be a proper job description.'
+ 
+  if (cleaned.split(/\s+/).filter(Boolean).length < 35) {
+    return 'The job description looks too short. Please paste a fuller JD.'
   }
-
-  const htmlTags = text.match(/<[^>]+>/g) || []
-  if (HTML_PATTERN.test(text) || htmlTags.length >= 3) {
-    return 'The pasted content looks like HTML or webpage markup. Paste only clean JD text.'
-  }
-
-  if (CODE_PATTERN.test(text)) {
+ 
+  if (looksLikeRealCode(cleaned) && !looksLikeJobDescription(cleaned)) {
     return 'The pasted content looks like code or script text, not a job description.'
   }
-
-  const lower = text.toLowerCase()
-  const hits = JOB_HINT_WORDS.filter((word) => lower.includes(word)).length
-
-  if (hits < 2) {
-    return 'This does not look like a normal job description. Paste a JD with role, requirements, responsibilities, skills, or qualifications.'
+ 
+  if (!looksLikeJobDescription(cleaned)) {
+    return 'The pasted content does not look enough like a job description yet.'
   }
-
+ 
   return ''
 }
+ 
