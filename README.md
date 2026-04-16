@@ -1,9 +1,11 @@
-HireFit
+# HireFit
  
 <p align="center">
   <b>AI Resume–Job Matcher and Safer Resume Optimizer</b><br/>
   Analyze resume-to-JD fit, identify recruiter-facing gaps, validate evidence, simulate shortlist risk, and generate a safer optimized resume draft.
-</p><p align="center">
+</p>
+ 
+<p align="center">
   <img alt="React" src="https://img.shields.io/badge/Frontend-React-blue">
   <img alt="Vite" src="https://img.shields.io/badge/Build-Vite-purple">
   <img alt="Tailwind" src="https://img.shields.io/badge/UI-TailwindCSS-06B6D4">
@@ -11,324 +13,202 @@ HireFit
   <img alt="Python" src="https://img.shields.io/badge/Language-Python-3776AB">
   <img alt="Deployment" src="https://img.shields.io/badge/Deploy-Vercel%20%7C%20Render-black">
 </p>
+ 
 ---
  
 ## Live Demo
  
-- Frontend: https://ai-resume-job-matcher-beta.vercel.app/
-- Backend Health: https://ai-resume-job-matcher-bfaq.onrender.com/health
+- **Frontend:** https://ai-resume-job-matcher-beta.vercel.app/
+- **Backend Health:** https://ai-resume-job-matcher-bfaq.onrender.com/health
  
-Overview
+---
+
+## Overview
  
-HireFit is an AI-powered resume analysis and safer optimization platform built to help users understand how well their resume aligns with a job description.
+**HireFit** is an AI-powered resume analysis and safer optimization platform built to help users understand how well their resume aligns with a job description.
  
 Unlike basic ATS keyword tools, HireFit combines:
  
-structured JD parsing
- 
-evidence-backed skill validation
- 
-recruiter-style shortlist risk analysis
- 
-ATS audit
- 
-multi-JD comparison
- 
-safer resume optimization with honesty guardrails
- 
+- **structured JD parsing**
+- **evidence-backed skill validation**
+- **recruiter-style shortlist risk analysis**
+- **ATS audit**
+- **multi-JD comparison**
+- **safer resume optimization with honesty guardrails**
  
 The goal is not just to score a resume, but to help the user improve it responsibly.
  
- 
 ---
  
-Why HireFit?
+## Why HireFit?
  
 Most resume tools fall into one of these traps:
  
-shallow keyword matching with little explanation
- 
-overly aggressive AI rewriting
- 
-inflated suggestions that add unsupported claims
- 
-no recruiter-facing analysis beyond ATS score
- 
+- **shallow keyword matching with little explanation**
+- **overly aggressive AI rewriting**
+- **inflated suggestions that add unsupported claims**
+- **no recruiter-facing analysis beyond ATS score**
  
 HireFit was designed to solve that by focusing on:
  
-explainability
- 
-safety
- 
-evidence-backed recommendations
- 
-recruiter relevance
- 
-practical resume improvement
- 
- 
+- **explainability**
+- **safety**
+- **evidence-backed recommendations**
+- **recruiter relevance**
+- **practical resume improvement**
  
 ---
  
-Key Features
- 
-Resume vs Job Description Analysis
- 
-upload resume
- 
-paste JD or fetch from URL
- 
-analyze resume-to-JD alignment
- 
- 
-Skill Intelligence
- 
-required skills
- 
-preferred skills
- 
-general skills
- 
-matched skills
- 
-missing skills
- 
-critical missing skills
- 
- 
-Evidence-Backed Validation
- 
-checks whether claimed or matched skills are actually supported by:
- 
-skills section
- 
-experience
- 
-projects
- 
-summary
- 
-certifications
- 
- 
- 
-Experience Alignment
- 
-estimates candidate experience from resume
- 
-compares it against JD minimum experience expectations
- 
- 
-Detailed Scoring
- 
-required skill score
- 
-preferred skill score
- 
-general skill score
- 
-weighted skill score
- 
-semantic score
- 
-section evidence score
- 
-skill support score
- 
-critical missing penalty
- 
-overall match score
- 
-fit label
- 
- 
-ATS Audit
- 
-contact information checks
- 
-summary quality
- 
-skills section checks
- 
-quantified impact detection
- 
-readability / ATS formatting review
- 
-quick ATS fixes
- 
- 
-Recruiter View
- 
-evidence-backed keyword coverage
- 
-why-not-shortlisted simulator
- 
-practical next-step action plan
- 
- 
-Safer Resume Optimization
- 
-optimized headline
- 
-optimized summary
- 
-reordered skills
- 
-cleaned experience / project bullets
- 
-before vs after comparison
- 
-unresolved gaps
- 
-manual review warning
- 
-export as TXT / DOC / PDF
- 
- 
-Multi-JD Comparison
- 
-compare one resume against multiple job descriptions
- 
-identify stronger and weaker targets
- 
- 
-UI / UX
- 
-light / dark mode
- 
-sticky result tabs
- 
-recruiter-focused sections
- 
-structured optimized resume preview
- 
-persistent visitor count
- 
- 
+## Key Features
+ 
+### Resume vs Job Description Analysis
+- upload resume
+- paste JD or fetch from URL
+- analyze resume-to-JD alignment
+ 
+### Skill Intelligence
+- required skills
+- preferred skills
+- general skills
+- matched skills
+- missing skills
+- critical missing skills
+ 
+### Evidence-Backed Validation
+Checks whether claimed or matched skills are actually supported by:
+ 
+- skills section
+- experience
+- projects
+- summary
+- certifications
+ 
+### Experience Alignment
+- estimates candidate experience from resume
+- compares it against JD minimum experience expectations
+ 
+### Detailed Scoring
+- required skill score
+- preferred skill score
+- general skill score
+- weighted skill score
+- semantic score
+- section evidence score
+- skill support score
+- critical missing penalty
+- overall match score
+- fit label
+ 
+### ATS Audit
+- contact information checks
+- summary quality
+- skills section checks
+- quantified impact detection
+- readability / ATS formatting review
+- quick ATS fixes
+ 
+### Recruiter View
+- evidence-backed keyword coverage
+- why-not-shortlisted simulator
+- practical next-step action plan
+ 
+### Safer Resume Optimization
+- optimized headline
+- optimized summary
+- reordered skills
+- cleaned experience / project bullets
+- before vs after comparison
+- unresolved gaps
+- manual review warning
+- export as TXT / DOC / PDF
+ 
+### Multi-JD Comparison
+- compare one resume against multiple job descriptions
+- identify stronger and weaker targets
+ 
+### UI / UX
+- light / dark mode
+- sticky result tabs
+- recruiter-focused sections
+- structured optimized resume preview
+- persistent visitor count
  
 ---
- 
-Product Philosophy
+
+
+## Product Philosophy
  
 HireFit is intentionally designed with guardrails.
  
-It does not try to:
+### It does **not** try to:
+- invent new skills
+- fabricate experience
+- exaggerate achievements
+- blindly optimize for ATS by stuffing keywords
  
-invent new skills
- 
-fabricate experience
- 
-exaggerate achievements
- 
-blindly optimize for ATS by stuffing keywords
- 
- 
-It does try to:
- 
-strengthen supported resume content
- 
-surface real gaps honestly
- 
-improve recruiter readability
- 
-help users make safer, more credible edits
- 
+### It **does** try to:
+- strengthen supported resume content
+- surface real gaps honestly
+- improve recruiter readability
+- help users make safer, more credible edits
  
 > Every generated output should still be reviewed manually before use.
  
+---
  
+## Architecture
  
+### Frontend
+- React
+- Vite
+- Tailwind CSS
+ 
+### Backend
+- FastAPI
+- Python
+ 
+### Matching Engine
+- deterministic NLP and scoring
+- TF-IDF + cosine similarity for deployment-safe semantic comparison
+ 
+### LLM Layer
+- Gemini for explanation and safer rewrite generation
+- mock fallback support
+ 
+### Deployment
+- Frontend: Vercel
+- Backend: Render
  
 ---
  
-Architecture
+## Tech Stack
  
-Frontend
+### Frontend
+- React
+- Vite
+- Tailwind CSS
+- jsPDF
  
-React
+### Backend
+- FastAPI
+- Uvicorn
+- Python
  
-Vite
+### NLP / Analysis
+- rule-based parsing
+- TF-IDF
+- cosine similarity
+- evidence validation heuristics
+- recruiter-style risk simulation
  
-Tailwind CSS
- 
- 
-Backend
- 
-FastAPI
- 
-Python
- 
- 
-Matching Engine
- 
-deterministic NLP and scoring
- 
-TF-IDF + cosine similarity for deployment-safe semantic comparison
- 
- 
-LLM Layer
- 
-Gemini for explanation and safer rewrite generation
- 
-mock fallback support
- 
- 
-Deployment
- 
-Frontend: Vercel
- 
-Backend: Render
- 
- 
+### LLM
+- Gemini API
  
 ---
  
-Tech Stack
+## Project Structure
  
-Frontend
- 
-React
- 
-Vite
- 
-Tailwind CSS
- 
-jsPDF
- 
- 
-Backend
- 
-FastAPI
- 
-Uvicorn
- 
-Python
- 
- 
-NLP / Analysis
- 
-rule-based parsing
- 
-TF-IDF
- 
-cosine similarity
- 
-evidence validation heuristics
- 
-recruiter-style risk simulation
- 
- 
-LLM
- 
-Gemini API
- 
- 
- 
----
- 
-Project Structure
- 
+```bash
 ai-resume-matcher/
 ├── backend/
 │   ├── app/
@@ -461,10 +341,8 @@ recruiter-facing risk
 ---
  
 Screenshots
- 
-> Add your screenshots here after pushing the repo.
- 
- 
+
+
  
 Overview Tab
  
@@ -690,3 +568,4 @@ Author
 Created by Jatin Shukla
  
  
+---
